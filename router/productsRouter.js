@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getOneProduct,getAllProducts,createOneProduct,updateOneProduct,updatePartialProduct,deleteProduct } from "../controller/productsController.js";
+import { getOneProduct,getAllProducts,createOneProduct,updateOneProduct,deleteProduct } from "../controller/productsController.js";
 //responsable del ruteo (funciones del controller) + ejecutar middlewares
 const productsRouter = Router()
 //AMBC / CRUD
@@ -15,9 +15,6 @@ productsRouter.post("/", createOneProduct)
 
 //PUT datos en el body + id: actualiza un elemento especifico
 productsRouter.put("/:id", updateOneProduct)
-
-//PATCH datos en el body + id: actualiza un elemento especifico parcialmente
-productsRouter.patch("/:id", updatePartialProduct)
 
 //DELETE con un id: eleminar un elemento de la base de datos (logica/fisica)
 productsRouter.delete("/:id", deleteProduct)

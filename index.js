@@ -2,15 +2,23 @@ import express from "express"
 import productsRouter from "./router/productsRouter.js"
 import env from "dotenv"
 import mongoose from "mongoose"
+import cors from "cors"
 env.config()
 
 const PORT = process.env.PORT
 
 const app = express()
 
-app.use(express.json())
+const corsOptions = {
+    origin: ["http://localhost:5173"],
+    methods:["GET","PUT","POST","DELETE"], //no bloquea directamente sino que es lo que responde al tirar el options
+    allowedHeaders: ["Content-Type"]
+}
 
-app.use("/api/products",productsRouter)
+app.use(express.json())
+app.use(cors(corsOptions))
+
+app.use("/api/products",productsRouter) //ABMC
 //app.use("/api/category",categoriesRouter)
 
 mongoose.connect(process.env.MONGOURL).then(()=>{

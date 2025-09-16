@@ -1,44 +1,41 @@
 import Product from "../model/productsModel.js";
 export class productsService {
-  getOne(id) {
-    //throw new Error("error al buscar el producto")
-    return this.productosMock.find((prod) => prod.id == id);
+  async getOne(id) {
+    console.log(id)
+    const producto = await Product.findOne({id:Number(id)})
+    return producto
   }
 
   async getAll() {
     const productos = await Product.find()
-    console.log(productos)
     return productos
   }
 
-  async create(producto) {
+  async create(name,price) {
+    const idGenerado = Math.ceil((Math.random()*1000000)+1)
+      const producto = {
+    name,
+    price,
+    status:true,
+    id:idGenerado
+  };
     const ProductoCreado = await Product.create(producto)
     return ProductoCreado
   }
 
-  update(producto) {
-    //buscar elemento
-    const index = this.productosMock.findIndex((prod)=>prod.id==producto.id)
-    //actualizar el elemento
-    this.productosMock[index] = producto;
-    //devolver el elemento actualizado
-    return this.productosMock[index]
+  async update(producto) {
+    const productoActualizado = await Product.updateOne({id:producto.id},{...producto})
+    return productoActualizado
   }
-
-  updatePartial(producto) {
-    const index = this.productosMock.findIndex((prod)=>prod.id==producto.id)
-
-    this.productosMock[index] = {
-      ...this.productosMock[index],
-      ...producto
-    }
-
-    return this.productosMock[index]
+  // borrado fisico o logico
+  async deleteLogicoProduct(id) { 
+    const productoEliminado = await Product.updateOne({id:id}, {status:false})
+    return productoEliminado
   }
+/*
+  async deleteFisicoProduct(id) {
+    const productoEliminado = await Product.deleteOne({id:id})
 
-  deleteProduct(id) { // borrado fisico o logico
-    this.productosMock[id-1].state=false;
-
-    return this.productosMock[id-1]
-  }
+    return productoEliminado
+  }*/
 }

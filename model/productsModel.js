@@ -4,7 +4,8 @@ const {Schema,model} = mongoose
 const productSchema = new Schema({
     name:String,
     price:Number,
-    state:Boolean
+    status:Boolean,
+    id:Number
 });
 
 const Product = model("Product",productSchema);

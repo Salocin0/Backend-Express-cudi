@@ -3,16 +3,16 @@ import { productsService } from "../service/productsService.js";
 //responsable de quitar las variables de la peticion y preparar la salida
 const ps = new productsService()
 
-export const getOneProduct = (req, res) => {
+export const getOneProduct = async (req, res) => {
   try {
     //extraer del req las variables
     const { id } = req.params;
     //llamamos al service que resuelve la logica
-    const producto = ps.getOne(id);
+    const producto = await ps.getOne(id);
     //devolver resultado
     res.send(producto);
   } catch (error) {
-    //devolvemos error 500: error servidor
+    console.log(error)
     res.send(500);
   }
 };
@@ -26,53 +26,33 @@ export const getAllProducts = async (req, res) => {
 
 export const createOneProduct = async (req, res) => {
   const { name, price } = req.body;
+  console.log(name, price);
 
   if (!name || !price) {
     res.send("faltan parametros");
   }
 
-  const producto = {
-    name,
-    price,
-    status:true
-  };
-  const productoCreado = await ps.create(producto);
+  const productoCreado = await ps.create(name,price);
   res.send(productoCreado);
 };
 
-export const updateOneProduct = (req, res) => {
-  const {id} = req.params
-  const {name,price,status} = req.body
-
-  if(!name || !price || !status || !id){
-    res.send("faltan parametros");
-  }
-
-  const producto = {
-    name,price,status,id
-  }
-
-  const productoActualizado = ps.update(producto)
-  res.send(productoActualizado)
-};
-
-export const updatePartialProduct = (req, res) => {
+export const updateOneProduct = async (req, res) => {
   const {id} = req.params
   const {name,price,status} = req.body
 
   const producto = {
-    name,price,status,id
+    name,price,status,id:Number(id)
   }
 
-  const productoActualizado = ps.updatePartial(producto)
+  const productoActualizado = await ps.update(producto)
   res.send(productoActualizado)
 };
 
-export const deleteProduct = (req, res) => {
+export const deleteProduct = async (req, res) => {
     try {
         const {id} = req.params
         console.log(id)
-        const productoEliminado = ps.deleteProduct(Number(id))
+        const productoEliminado = await ps.deleteLogicoProduct(Number(id))
         res.send(productoEliminado)
     } catch (error) {
         
