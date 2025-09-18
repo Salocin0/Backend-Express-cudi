@@ -1,38 +1,63 @@
 import Product from "../model/productsModel.js";
+import { CategoryService } from "./categoryService.js";
+
+const cs = new CategoryService();
 export class productsService {
   async getOne(id) {
-    console.log(id)
-    const producto = await Product.findOne({id:Number(id)})
-    return producto
+    const producto = await Product.findById(id);
+    return producto;
   }
 
   async getAll() {
-    const productos = await Product.find()
-    return productos
+    const productos = await Product.find();
+    return productos;
   }
 
-  async create(name,price) {
-    const idGenerado = Math.ceil((Math.random()*1000000)+1)
-      const producto = {
-    name,
-    price,
-    status:true,
-    id:idGenerado
-  };
-    const ProductoCreado = await Product.create(producto)
-    return ProductoCreado
+  async create(title, price, desciption, image, category, rate, count, stock) {
+    const objectCaregory = cs.getOneByName(category);
+    const producto = {
+      title,
+      price,
+      desciption,
+      image,
+      stock,
+      category: objectCaregory._id,
+      rating: {
+        rate,
+        count,
+      },
+    };
+    const ProductoCreado = await Product.create(producto);
+    return ProductoCreado;
   }
 
-  async update(producto) {
-    const productoActualizado = await Product.updateOne({id:producto.id},{...producto})
-    return productoActualizado
+  async update(id,title, price, desciption, image, category, rate, count, stock) {
+    const producto = {
+      title,
+      price,
+      desciption,
+      image,
+      stock,
+      category,
+      rating: {
+        rate,
+        count,
+      },
+    };
+
+    const productoActualizado = await Product.findByIdAndUpdate(id, {
+      ...producto,
+    });
+    return productoActualizado;
   }
   // borrado fisico o logico
-  async deleteLogicoProduct(id) { 
-    const productoEliminado = await Product.updateOne({id:id}, {status:false})
-    return productoEliminado
+  async deleteLogicoProduct(id) {
+    const productoEliminado = await Product.findByIdAndUpdate(id, {
+      status: false,
+    });
+    return productoEliminado;
   }
-/*
+  /*
   async deleteFisicoProduct(id) {
     const productoEliminado = await Product.deleteOne({id:id})
 

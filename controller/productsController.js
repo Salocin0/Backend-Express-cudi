@@ -1,60 +1,136 @@
 import { productsService } from "../service/productsService.js";
 
 //responsable de quitar las variables de la peticion y preparar la salida
-const ps = new productsService()
+const ps = new productsService();
 
 export const getOneProduct = async (req, res) => {
   try {
-    //extraer del req las variables
     const { id } = req.params;
-    //llamamos al service que resuelve la logica
+
+    // validaciones
+    /*
+    res.status(400).json({
+      mensage: "Error",
+      code: 400,
+      data: validaciones pendientes
+    });*/
+
     const producto = await ps.getOne(id);
-    //devolver resultado
-    res.send(producto);
+    res.status(200).json({
+      mensage: "Success",
+      code: 200,
+      data: producto,
+    });
   } catch (error) {
-    console.log(error)
-    res.send(500);
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
   }
 };
 
 export const getAllProducts = async (req, res) => {
   try {
     const productos = await ps.getAll();
-    res.status(200).json(productos);
-  } catch (error) {}
+    res.status(200).json({
+      mensage: "Success",
+      code: 200,
+      data: productos,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
+  }
 };
 
 export const createOneProduct = async (req, res) => {
-  const { name, price } = req.body;
-  console.log(name, price);
+  try {
+    const { title, price, desciption, image, category, rate, count, stock } =
+      req.body;
 
-  if (!name || !price) {
-    res.send("faltan parametros");
+    if (!title || !price || !category) {
+      res.status(400).json({
+        mensage: "Error",
+        code: 400,
+        data: "faltan parametros",
+      });
+    }
+
+    const productoCreado = await ps.create(
+      title,
+      price,
+      desciption,
+      image,
+      category,
+      rate,
+      count,
+      stock
+    );
+    res.status(201).json({
+      mensage: "Success",
+      code: 201,
+      data: productoCreado,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
   }
-
-  const productoCreado = await ps.create(name,price);
-  res.send(productoCreado);
 };
 
 export const updateOneProduct = async (req, res) => {
-  const {id} = req.params
-  const {name,price,status} = req.body
+  try {
+    const { id } = req.params;
+    const { title, price, desciption, image, category, rate, count, stock } =
+      req.body;
 
-  const producto = {
-    name,price,status,id:Number(id)
+    const productoActualizado = await ps.update(
+      id,
+      title,
+      price,
+      desciption,
+      image,
+      category,
+      rate,
+      count,
+      stock
+    );
+
+    res.status(200).json({
+      mensage: "Success",
+      code: 200,
+      data: productoActualizado,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
   }
-
-  const productoActualizado = await ps.update(producto)
-  res.send(productoActualizado)
 };
 
 export const deleteProduct = async (req, res) => {
-    try {
-        const {id} = req.params
-        console.log(id)
-        const productoEliminado = await ps.deleteLogicoProduct(Number(id))
-        res.send(productoEliminado)
-    } catch (error) {
-        
-    }
+  try {
+    const { id } = req.params;
+    const productoEliminado = await ps.deleteLogicoProduct(id);
+
+    res.status(200).json({
+      mensage: "Success",
+      code: 200,
+      data: productoEliminado,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
+  }
 };

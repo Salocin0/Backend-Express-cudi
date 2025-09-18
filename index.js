@@ -1,5 +1,6 @@
 import express from "express"
 import productsRouter from "./router/productsRouter.js"
+import categoryRouter from "./router/categoryRouter.js"
 import env from "dotenv"
 import mongoose from "mongoose"
 import cors from "cors"
@@ -19,7 +20,7 @@ app.use(express.json())
 app.use(cors(corsOptions))
 
 app.use("/api/products",productsRouter) //ABMC
-//app.use("/api/category",categoriesRouter)
+app.use("/api/category",categoryRouter)
 
 mongoose.connect(process.env.MONGOURL).then(()=>{
     console.log("base de datos conectada a " + process.env.MONGOURL)
