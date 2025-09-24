@@ -1,4 +1,5 @@
 import { productsService } from "../service/productsService.js";
+import { validationResult } from "express-validator";
 
 //responsable de quitar las variables de la peticion y preparar la salida
 const ps = new productsService();
@@ -6,14 +7,6 @@ const ps = new productsService();
 export const getOneProduct = async (req, res) => {
   try {
     const { id } = req.params;
-
-    // validaciones
-    /*
-    res.status(400).json({
-      mensage: "Error",
-      code: 400,
-      data: validaciones pendientes
-    });*/
 
     const producto = await ps.getOne(id);
     res.status(200).json({
@@ -49,21 +42,13 @@ export const getAllProducts = async (req, res) => {
 
 export const createOneProduct = async (req, res) => {
   try {
-    const { title, price, desciption, image, category, rate, count, stock } =
+    const { title, price, description, image, category, rate, count, stock } =
       req.body;
-
-    if (!title || !price || !category) {
-      res.status(400).json({
-        mensage: "Error",
-        code: 400,
-        data: "faltan parametros",
-      });
-    }
 
     const productoCreado = await ps.create(
       title,
       price,
-      desciption,
+      description,
       image,
       category,
       rate,

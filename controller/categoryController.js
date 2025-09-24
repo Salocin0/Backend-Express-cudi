@@ -2,7 +2,23 @@ import { CategoryService } from "../service/categoryService.js";
 
 const cs = new CategoryService();
 
-export const getOneCategory = async (req, res) => {};
+export const getOneCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const category = await cs.getOne(id);
+    res.status(200).json({
+      mensage: "Success",
+      code: 200,
+      data: category,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
+  }
+};
 
 export const getOneCategoryByName = async (req, res) => {
   try {
@@ -61,6 +77,39 @@ export const createCategory = async (req, res) => {
   }
 };
 
-export const updateCategory = async (req, res) => {};
+export const updateCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, description, image, status } = req.body;
+    const category = await cs.update(id, name, description, image, status);
+    res.status(200).json({
+      mensage: "Success",
+      code: 200,
+      data: category,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
+  }
+};
 
-export const deleteCategory = async (req, res) => {};
+export const deleteCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const category = await cs.delete(id);
+    res.status(200).json({
+      mensage: "Success",
+      code: 200,
+      data: category,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
+  }
+};

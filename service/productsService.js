@@ -14,7 +14,7 @@ export class productsService {
   }
 
   async create(title, price, desciption, image, category, rate, count, stock) {
-    const objectCaregory = cs.getOneByName(category);
+    const objectCaregory = await cs.getOneByName(category);
     const producto = {
       title,
       price,

@@ -1,6 +1,9 @@
 import Category from "../model/categoryModel.js";
 export class CategoryService {
-  getOne(id) {}
+  getOne(id) {
+    const category = Category.findById(id);
+    return category;
+  }
 
   async getOneByName(name) {
     const category = await Category.findOne({ name });
@@ -15,6 +18,12 @@ export class CategoryService {
     const category = await Category.create({name,description,image})
     return category
   }
-  update(id, name, description, image) {}
-  delete(id) {}
+  async update(id, name, description, image) {
+    const category = await Category.findByIdAndUpdate(id, { name, description, image });
+    return category;
+  }
+  async delete(id) {
+    const category = await Category.findByIdAndUpdate(id, { status: false });
+    return category;
+  }
 }
