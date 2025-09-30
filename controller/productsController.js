@@ -40,6 +40,45 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
+export const getAllProductsPaginado = async (req, res) => {
+  try {
+    const {page = 1, limit = 10} = req.query
+    const offset = (page - 1) * limit
+    const productos = await ps.getAllPaginado(page,limit,offset);
+    res.status(200).json({
+      mensage: "Success",
+      code: 200,
+      data: productos,
+    });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
+  }
+};
+
+export const getAllProductsFiltrado = async (req, res) => {
+  try {
+    const {name, pmin,pmax} = req.query
+    const productos = await ps.getAllFiltrado(name,pmin,pmax);
+    res.status(200).json({
+      mensage: "Success",
+      code: 200,
+      data: productos,
+    });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
+  }
+};
+
 export const createOneProduct = async (req, res) => {
   try {
     const { title, price, description, image, category, rate, count, stock } =

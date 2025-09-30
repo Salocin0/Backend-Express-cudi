@@ -13,6 +13,39 @@ export class productsService {
     return productos;
   }
 
+   async getAllPaginado(page,limit,offset) {
+    const productos = await Product.find().skip(offset).limit(limit)
+    const totalProduct = await Product.countDocuments()
+    const totalPage=Math.ceil(totalProduct/limit)
+
+    const result = {
+      productos,
+      totalProduct,
+      totalPage,
+      currentPage:page,
+      prevpage:page>1,
+      postpage:page<totalPage
+    }
+
+    return result
+  }
+
+  async getAllFiltrado(name,pmin,pmax) {
+    const filters = {status:true}
+    if(name){
+      filters.title = {$regex:name, $options:"i"}
+    }
+    filters.price = {}
+    if(pmin){
+      filters.price.$gte = Number(pmin)
+    }
+    if(pmax){
+      filters.price.$lte = Number(pmax)
+    }
+    const productos = Product.find(filters)
+    return productos
+  }
+
   async create(title, price, desciption, image, category, rate, count, stock) {
     const objectCaregory = await cs.getOneByName(category);
     const producto = {
