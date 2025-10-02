@@ -13,37 +13,44 @@ export class productsService {
     return productos;
   }
 
-   async getAllPaginado(page,limit,offset) {
-    const productos = await Product.find().skip(offset).limit(limit)
-    const totalProduct = await Product.countDocuments()
-    const totalPage=Math.ceil(totalProduct/limit)
+  async getAllPaginado(page, limit, offset) {
+    const productos = await Product.find().skip(offset).limit(limit);
+    const totalProduct = await Product.countDocuments();
+    const totalPage = Math.ceil(totalProduct / limit);
 
     const result = {
       productos,
       totalProduct,
       totalPage,
-      currentPage:page,
-      prevpage:page>1,
-      postpage:page<totalPage
-    }
+      currentPage: page,
+      prevpage: page > 1,
+      postpage: page < totalPage,
+    };
 
-    return result
+    return result;
   }
 
-  async getAllFiltrado(name,pmin,pmax) {
-    const filters = {status:true}
-    if(name){
-      filters.title = {$regex:name, $options:"i"}
+  async getAllFiltrado(name, pmin, pmax, sortby, order) {
+    const filters = { status: true };
+    if (name) {
+      filters.title = { $regex: name, $options: "i" };
     }
-    filters.price = {}
-    if(pmin){
-      filters.price.$gte = Number(pmin)
+    if (pmin || pmax) {
+      filters.price = {};
+      if (pmin) {
+        filters.price.$gte = Number(pmin);
+      }
+      if (pmax) {
+        filters.price.$lte = Number(pmax);
+      }
     }
-    if(pmax){
-      filters.price.$lte = Number(pmax)
+
+    const sortOptions = {};
+    if (sortby) {
+      sortOptions[sortby] = order == "desc" ? -1 : 1;
     }
-    const productos = Product.find(filters)
-    return productos
+    const productos = Product.find(filters).sort(sortOptions);
+    return productos;
   }
 
   async create(title, price, desciption, image, category, rate, count, stock) {
@@ -64,7 +71,17 @@ export class productsService {
     return ProductoCreado;
   }
 
-  async update(id,title, price, desciption, image, category, rate, count, stock) {
+  async update(
+    id,
+    title,
+    price,
+    desciption,
+    image,
+    category,
+    rate,
+    count,
+    stock
+  ) {
     const producto = {
       title,
       price,

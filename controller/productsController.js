@@ -62,8 +62,8 @@ export const getAllProductsPaginado = async (req, res) => {
 
 export const getAllProductsFiltrado = async (req, res) => {
   try {
-    const {name, pmin,pmax} = req.query
-    const productos = await ps.getAllFiltrado(name,pmin,pmax);
+    const {name, pmin,pmax,sortby,order} = req.query
+    const productos = await ps.getAllFiltrado(name,pmin,pmax,sortby,order);
     res.status(200).json({
       mensage: "Success",
       code: 200,
