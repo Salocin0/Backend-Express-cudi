@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { getOneProduct,getAllProducts,createOneProduct,updateOneProduct,deleteProduct,getAllProductsPaginado,getAllProductsFiltrado } from "../controller/productsController.js";
 import { postProducto,defaultValidation } from "../validations/productsValidation.js";
-import validationMiddleware from "../validations/validationMiddleware.js";
+import validationMiddleware from "../middleware/validationMiddleware.js";
 //responsable del ruteo (funciones del controller) + ejecutar middlewares
 const productsRouter = Router()
 //AMBC / CRUD
@@ -12,6 +12,7 @@ productsRouter.get("/filtrado/",defaultValidation,validationMiddleware, getAllPr
 productsRouter.get("/:id",defaultValidation,validationMiddleware, getOneProduct) 
 
 //GET: que va a traer todos los elementos*
+//usuario tenga token, sea user o admin, me comprima la salida, me la valide
 productsRouter.get("/",defaultValidation,validationMiddleware, getAllProducts) //?page=4&limit=8
 
 
