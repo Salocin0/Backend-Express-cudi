@@ -47,7 +47,7 @@ export const loginController = async (req, res) => {
 export const renovarTokenController = async (req, res) => {
   try {
     const refreshtoken = req.headers["x-refresh-token"];
-    const { accesstoken } = await us.renovarAccessToken(refreshtoken);
+    const accesstoken = await us.renovarAccessToken(refreshtoken);
     res.set({
       "Authorization": `Bearer ${accesstoken}`,
       "x-refresh-token": refreshtoken,
