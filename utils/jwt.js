@@ -9,12 +9,11 @@ const JWT_REFRESH = process.env.JWT_REFRESH
 const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN
 
 export const generarAccessToken = (payload)=>{
-    console.log(JWT_ACCESS_EXPIRES_IN)
-    const expiresIn = JWT_ACCESS_EXPIRES_IN || 60*15 // 15 min
+    const expiresIn = 5 // 15 min
     return jwt.sign(payload,JWT_ACCESS,{expiresIn})
 }
 
 export const generarRefreshToken = (payload)=>{
-    const expiresIn = JWT_REFRESH_EXPIRES_IN || 2592000 // 30 dias
+    const expiresIn =  2592000 // 30 dias
     return jwt.sign(payload,JWT_REFRESH,{expiresIn})
 }

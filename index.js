@@ -5,8 +5,6 @@ import env from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import userRouter from "./router/userRouter.js";
-import { authMiddleware } from "./middleware/authMiddleware.js";
-import { authRoles } from "./middleware/authRoles.js";
 import { brotliCompression } from "./middleware/brotliCompressionMiddleware.js";
 
 env.config();
@@ -37,7 +35,7 @@ const corsOptions = {
 }))*/
 
 app.use(express.json({ limit: "10mb" }));
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use("/api/products", productsRouter); //ABMC
 app.use("/api/category", categoryRouter);

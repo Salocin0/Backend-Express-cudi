@@ -22,8 +22,6 @@ export const getOneCategory = async (req, res) => {
 
 export const getOneCategoryByName = async (req, res) => {
   try {
-    console.log(name);
-
     const { name } = req.params;
 
     const category = await cs.getOneByName(name);

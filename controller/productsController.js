@@ -100,6 +100,7 @@ export const createOneProduct = async (req, res) => {
       data: productoCreado,
     });
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       mensage: "Error",
       code: 500,

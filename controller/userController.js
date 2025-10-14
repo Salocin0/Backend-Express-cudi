@@ -12,6 +12,7 @@ export const registerController = async (req, res) => {
       data: newUser,
     });
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       mensage: "Error",
       code: 500,
@@ -34,6 +35,7 @@ export const loginController = async (req, res) => {
       data: { accesstoken, refreshtoken },
     });
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       mensage: "Error",
       code: 500,

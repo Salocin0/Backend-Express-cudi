@@ -2,6 +2,7 @@ import { Router } from "express";
 import { getOneProduct,getAllProducts,createOneProduct,updateOneProduct,deleteProduct,getAllProductsPaginado,getAllProductsFiltrado } from "../controller/productsController.js";
 import { postProducto,defaultValidation } from "../validations/productsValidation.js";
 import validationMiddleware from "../middleware/validationMiddleware.js";
+import {authMiddleware} from "../middleware/authMiddleware.js"
 //responsable del ruteo (funciones del controller) + ejecutar middlewares
 const productsRouter = Router()
 //AMBC / CRUD
@@ -17,7 +18,7 @@ productsRouter.get("/",defaultValidation,validationMiddleware, getAllProducts) /
 
 
 //POST datos en el body: crea un elemento
-productsRouter.post("/",postProducto,validationMiddleware,  createOneProduct)
+productsRouter.post("/",authMiddleware,postProducto,validationMiddleware,  createOneProduct)
 
 //PUT datos en el body + id: actualiza un elemento especifico
 productsRouter.put("/:id",defaultValidation,validationMiddleware, updateOneProduct)
