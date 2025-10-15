@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import userRouter from "./router/userRouter.js";
 import { brotliCompression } from "./middleware/brotliCompressionMiddleware.js";
+import cartRouter from "./router/cartRouter.js";
 
 env.config();
 
@@ -40,6 +41,7 @@ app.use(cors());
 app.use("/api/products", productsRouter); //ABMC
 app.use("/api/category", categoryRouter);
 app.use("/api/user", userRouter);
+app.use("/api/cart",cartRouter)
 /*app.get("/protegido",authMiddleware, (req,res)=>{
     res.json({
         mensage:"ruta protegida"

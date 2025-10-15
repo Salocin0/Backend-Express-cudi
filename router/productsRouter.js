@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getOneProduct,getAllProducts,createOneProduct,updateOneProduct,deleteProduct,getAllProductsPaginado,getAllProductsFiltrado } from "../controller/productsController.js";
+import { getOneProduct,getAllProducts,createOneProduct,updateOneProduct,deleteProduct,getAllProductsPaginado,getAllProductsFiltrado,getAllProductsPopulado } from "../controller/productsController.js";
 import { postProducto,defaultValidation } from "../validations/productsValidation.js";
 import validationMiddleware from "../middleware/validationMiddleware.js";
 import {authMiddleware} from "../middleware/authMiddleware.js"
@@ -9,6 +9,7 @@ const productsRouter = Router()
 
 productsRouter.get("/paginado/",defaultValidation,validationMiddleware, getAllProductsPaginado) //?page=4&limit=8
 productsRouter.get("/filtrado/",defaultValidation,validationMiddleware, getAllProductsFiltrado)
+productsRouter.get("/populado",defaultValidation,validationMiddleware, getAllProductsPopulado) //?page=4&limit=8
 //GET con un id: que va a traer un elemento
 productsRouter.get("/:id",defaultValidation,validationMiddleware, getOneProduct) 
 

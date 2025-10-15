@@ -40,6 +40,23 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
+export const getAllProductsPopulado = async (req, res) => {
+  try {
+    const productos = await ps.getAllPopulado();
+    res.status(200).json({
+      mensage: "Success",
+      code: 200,
+      data: productos,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
+  }
+};
+
 export const getAllProductsPaginado = async (req, res) => {
   try {
     const {page = 1, limit = 10} = req.query
