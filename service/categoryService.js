@@ -1,7 +1,7 @@
 import Category from "../model/categoryModel.js";
 export class CategoryService {
-  getOne(id) {
-    const category = Category.findById(id);
+  async getOne(id) {
+    const category = await Category.findById(id);
     return category;
   }
 

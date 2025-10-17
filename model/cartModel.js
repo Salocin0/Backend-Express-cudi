@@ -11,7 +11,7 @@ const cartSchema = new mongoose.Schema({
     default: Date.now(),
   },
   userid: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  detalle: { type: Schema.Types.ObjectId, ref: "Product", required: true }, //model intermedio
+  detalle: [{ type: Schema.Types.ObjectId, ref: "Detail", required: true }],
 });
 
 const Cart = mongoose.model("Cart", cartSchema);
