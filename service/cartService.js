@@ -4,8 +4,8 @@ import Product from "../model/productsModel.js";
 
 export class CartService {
   async getOne(idUsuario) {
-    const cart = await Cart.find({ userid: idUsuario }).populate({
-      path: "detail",
+    const cart = await Cart.findOne({ userid: idUsuario }).populate({
+      path: "detalle",
       populate: "product",
     });
     return cart;
@@ -13,7 +13,7 @@ export class CartService {
 
   async getAllCarts() {
     const cart = await Cart.find().populate({
-      path: "detail",
+      path: "detalle",
       populate: "product",
     });
     return cart;
@@ -23,58 +23,60 @@ export class CartService {
     const product = await Product.findById(idProducto);
     if (!product) throw new Error("producto no encontrado");
 
-    const cart = await Cart.findOne({ userid: idUsuario });
+    let cart = await Cart.findOne({ userid: idUsuario });
     if (!cart) cart = await Cart.create({ userid: idUsuario });
 
-    //buscamos los detalles del carrito que product sea igual a idproducto
-    const detail = await Detail.find({
+    // Buscar si ya existe un detail para este producto en el carrito
+    const existingDetail = await Detail.findOne({
       product: idProducto,
       _id: { $in: cart.detalle },
     });
 
-    if (detail) {
-      //si existe sumamos queantity a la cantidad
-      detail.quantity += quantity;
-      detail.price = product.price;
-      await detail.save();
+    if (existingDetail) {
+      // Si existe, actualizar la cantidad
+      existingDetail.quantity += quantity;
+      existingDetail.price = product.price;
+      await existingDetail.save();
     } else {
-      //sino creamos un detail nuevo asociado al producto
-      detail = await Detail.create({
+      // Si no existe, crear un detail nuevo
+      const newDetail = await Detail.create({
         product: idProducto,
         quantity,
         price: product.price,
       });
+      // Agregar el detail al carrito
+      cart.detalle.push(newDetail._id);
+      await cart.save();
     }
-    await cart.save();
 
-    return this.getOne(idUsuario);
+    return await this.getOne(idUsuario);
   }
 
   async removeProduct(idUsuario, idProducto) {
-    const cart = await Cart.find({ userid: idUsuario });
-    if (!cart) cart = await Cart.create({ userid: idUsuario });
+    const cart = await Cart.findOne({ userid: idUsuario });
+    if (!cart) throw new Error("carrito no encontrado");
 
-    const detail = await Detail.find({
+    const detail = await Detail.findOne({
       product: idProducto,
       _id: { $in: cart.detalle },
     });
 
     if (detail) {
       await Detail.findByIdAndDelete(detail._id);
-      cart.detail = cart.detail.filter(
+      cart.detalle = cart.detalle.filter(
         (id) => id.toString() !== detail._id.toString()
       );
       await cart.save();
     }
 
-    return this.getOne(idUsuario);
+    return await this.getOne(idUsuario);
   }
 
   async removeOneProduct(idUsuario, idProducto) {
-    const cart = await Cart.find({ userid: idUsuario });
-    if (!cart) cart = await Cart.create({ userid: idUsuario });
+    const cart = await Cart.findOne({ userid: idUsuario });
+    if (!cart) throw new Error("carrito no encontrado");
 
-    const detail = await Detail.find({
+    const detail = await Detail.findOne({
       product: idProducto,
       _id: { $in: cart.detalle },
     });
@@ -83,25 +85,27 @@ export class CartService {
       detail.quantity -= 1;
       if (detail.quantity <= 0) {
         await Detail.findByIdAndDelete(detail._id);
-        cart.detail = cart.detail.filter(
+        cart.detalle = cart.detalle.filter(
           (id) => id.toString() !== detail._id.toString()
         );
         await cart.save();
+      } else {
+        await detail.save();
       }
     }
 
-    return this.getOne(idUsuario)
+    return await this.getOne(idUsuario);
   }
 
   async ClearCart(idUsuario) {
-    const cart = await Cart.find({ userid: idUsuario });
-    if (!cart) cart = await Cart.create({ userid: idUsuario });
+    const cart = await Cart.findOne({ userid: idUsuario });
+    if (!cart) throw new Error("carrito no encontrado");
 
-    await Detail.deleteMany({_id:{ $in: cart.detalle }})
-    cart.detail = []
-    await cart.save()
+    await Detail.deleteMany({_id:{ $in: cart.detalle }});
+    cart.detalle = [];
+    await cart.save();
 
-    return this.getOne(idUsuario)
+    return await this.getOne(idUsuario);
   }
 }
 

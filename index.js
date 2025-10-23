@@ -1,18 +1,17 @@
-import express from "express";
-import productsRouter from "./router/productsRouter.js";
-import categoryRouter from "./router/categoryRouter.js";
-import env from "dotenv";
-import mongoose from "mongoose";
-import cors from "cors";
-import userRouter from "./router/userRouter.js";
-import { brotliCompression } from "./middleware/brotliCompressionMiddleware.js";
-import cartRouter from "./router/cartRouter.js";
+import express from "express"
+import productsRouter from "./router/productsRouter.js"
+import categoryRouter from "./router/categoryRouter.js"
+import userRouter from "./router/userRouter.js"
+import cartRouter from "./router/cartRouter.js"
+import env from "dotenv"
+import mongoose from "mongoose"
+import cors from "cors"
 
-env.config();
+env.config()
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT
 
-const app = express();
+const app = express()
 
 const corsOptions = {
   origin: ["http://localhost:5173"],
@@ -60,7 +59,7 @@ app.get("/adminyuser", authMiddleware,authRoles(["admin","user"]), (req, res) =>
   });
 });*/
 
-app.get("/compression",brotliCompression, (req, res) => {
+/*app.get("/compression",brotliCompression, (req, res) => {
   const productos = [];
 
   for (let i = 1; i <= 10000; i++) {
@@ -94,7 +93,7 @@ app.get("/compression2", (req, res) => {
     code: 200,
     data: productos,
   });
-});
+});*/
 
 app.use((req, res) => {
   res.status(404).json({

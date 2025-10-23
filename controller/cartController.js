@@ -1,11 +1,11 @@
-import { CartService } from "../service/cartService";
+import { CartService } from "../service/cartService.js";
 
 const cartService = new CartService()
 
-export const getOneCart = async () => {
+export const getOneCart = async (req, res) => {
   try {
     const user = req.user;
-    const cart = cartService.getOne(user.id);
+    const cart = await cartService.getOne(user.id);
     res.status(200).json({
       mensage: "Success",
       code: 200,
@@ -20,9 +20,9 @@ export const getOneCart = async () => {
   }
 };
 
-export const getAllCarts = async () => {
+export const getAllCarts = async (req, res) => {
   try {
-    const carts = cartService.getAll();
+    const carts = await cartService.getAllCarts();
     res.status(200).json({
       mensage: "Success",
       code: 200,
@@ -37,17 +37,18 @@ export const getAllCarts = async () => {
   }
 };
 
-export const addProduct = async () => {
+export const addProduct = async (req, res) => {
   try {
     const user = req.user;
     const {idProducto,quantity} = req.body
-    const cart = cartService.addProduct(user.id,idProducto,quantity);
+    const cart = await cartService.addProduct(user.id,idProducto,quantity);
     res.status(200).json({
       mensage: "Success",
       code: 200,
       data: cart,
     });
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       mensage: "Error",
       code: 500,
@@ -56,11 +57,11 @@ export const addProduct = async () => {
   }
 };
 
-export const removeProduct = async () => {
+export const removeProduct = async (req, res) => {
   try {
     const user = req.user;
     const {idProducto} = req.body
-    const cart = cartService.removeProduct(user.id);
+    const cart = await cartService.removeProduct(user.id, idProducto);
     res.status(200).json({
       mensage: "Success",
       code: 200,
@@ -75,7 +76,7 @@ export const removeProduct = async () => {
   }
 };
 
-export const removeOneProduct = async () => {
+export const removeOneProduct = async (req, res) => {
   try {
     const user = req.user;
     const {idProducto} = req.body
@@ -94,10 +95,10 @@ export const removeOneProduct = async () => {
   }
 };
 
-export const ClearCart = async () => {
+export const ClearCart = async (req, res) => {
   try {
     const user = req.user;
-    const cart = cartService.ClearCart(user.id);
+    const cart = await cartService.ClearCart(user.id);
     res.status(200).json({
       mensage: "Success",
       code: 200,

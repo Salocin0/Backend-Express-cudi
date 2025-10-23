@@ -1,14 +1,15 @@
 import { Router } from "express";
 import {getAllCarts, getOneCart,addProduct,removeOneProduct,removeProduct,ClearCart} from "../controller/cartController.js"
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const cartRouter = Router()
 
-cartRouter.get("/",getOneCart)
+cartRouter.get("/",authMiddleware,getOneCart)
 //cartRouter.get("/",getAllCarts)
-cartRouter.post("/add",addProduct)
-cartRouter.post("/remove",removeProduct)
-cartRouter.post("/removeOne",removeOneProduct)
-cartRouter.post("/clear",ClearCart)
+cartRouter.post("/add",authMiddleware,addProduct)
+cartRouter.post("/remove",authMiddleware,removeProduct)
+cartRouter.post("/removeOne",authMiddleware,removeOneProduct)
+cartRouter.post("/clear",authMiddleware,ClearCart)
 
 
 export default cartRouter

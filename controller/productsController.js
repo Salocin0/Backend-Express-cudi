@@ -96,6 +96,27 @@ export const getAllProductsFiltrado = async (req, res) => {
   }
 };
 
+
+export const getAllProductsCategory= async (req, res) => {
+  try {
+    const {category} = req.params
+    const productos = await ps.getAllProductsCategory(category);
+    res.status(200).json({
+      mensage: "Success",
+      code: 200,
+      data: productos,
+    });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      mensage: "Error",
+      code: 500,
+      data: error,
+    });
+  }
+};
+
+
 export const createOneProduct = async (req, res) => {
   try {
     const { title, price, description, image, category, rate, count, stock } =

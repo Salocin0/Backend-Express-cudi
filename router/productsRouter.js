@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getOneProduct,getAllProducts,createOneProduct,updateOneProduct,deleteProduct,getAllProductsPaginado,getAllProductsFiltrado,getAllProductsPopulado } from "../controller/productsController.js";
+import { getOneProduct,getAllProducts,createOneProduct,updateOneProduct,deleteProduct,getAllProductsPaginado,getAllProductsFiltrado,getAllProductsPopulado,getAllProductsCategory } from "../controller/productsController.js";
 import { postProducto,defaultValidation } from "../validations/productsValidation.js";
 import validationMiddleware from "../middleware/validationMiddleware.js";
 import {authMiddleware} from "../middleware/authMiddleware.js"
@@ -12,6 +12,9 @@ productsRouter.get("/filtrado/",defaultValidation,validationMiddleware, getAllPr
 productsRouter.get("/populado",defaultValidation,validationMiddleware, getAllProductsPopulado) //?page=4&limit=8
 //GET con un id: que va a traer un elemento
 productsRouter.get("/:id",defaultValidation,validationMiddleware, getOneProduct) 
+
+//get por category
+productsRouter.get("/category/:category", getAllProductsCategory)
 
 //GET: que va a traer todos los elementos*
 //usuario tenga token, sea user o admin, me comprima la salida, me la valide

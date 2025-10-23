@@ -1,3 +1,4 @@
+import Category from "../model/categoryModel.js";
 import Product from "../model/productsModel.js";
 import { CategoryService } from "./categoryService.js";
 
@@ -18,6 +19,14 @@ export class productsService {
     return productos;
   }
 
+  async getAllProductsCategory(category){
+    const categorydb = await Category.findOne({name: category})
+    let productos = await Product.find({category: categorydb?._id}).populate("category","name");
+    if(!productos || productos.length === 0){
+      productos = await Product.find().populate("category","name");
+    }
+    return productos;
+  }
 
   async create(title, price, desciption, image, category, rate, count, stock) {
     const objectCaregory = await cs.getOneByName(category);
