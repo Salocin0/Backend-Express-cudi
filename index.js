@@ -1,17 +1,20 @@
-import express from "express"
-import productsRouter from "./router/productsRouter.js"
-import categoryRouter from "./router/categoryRouter.js"
-import userRouter from "./router/userRouter.js"
-import cartRouter from "./router/cartRouter.js"
-import env from "dotenv"
-import mongoose from "mongoose"
-import cors from "cors"
+import express from "express";
+import productsRouter from "./router/productsRouter.js";
+import categoryRouter from "./router/categoryRouter.js";
+import userRouter from "./router/userRouter.js";
+import cartRouter from "./router/cartRouter.js";
+import env from "dotenv";
+import mongoose from "mongoose";
+import cors from "cors";
+import Stripe from "stripe";
 
-env.config()
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-const PORT = process.env.PORT
+env.config();
 
-const app = express()
+const PORT = process.env.PORT;
+
+const app = express();
 
 const corsOptions = {
   origin: ["http://localhost:5173"],
@@ -40,7 +43,7 @@ app.use(cors());
 app.use("/api/products", productsRouter); //ABMC
 app.use("/api/category", categoryRouter);
 app.use("/api/user", userRouter);
-app.use("/api/cart",cartRouter)
+app.use("/api/cart", cartRouter);
 /*app.get("/protegido",authMiddleware, (req,res)=>{
     res.json({
         mensage:"ruta protegida"
@@ -94,6 +97,17 @@ app.get("/compression2", (req, res) => {
     data: productos,
   });
 });*/
+
+app.post("/create-payment-intent", async (req, res) => {
+  const { amount, currency = "usd", userid } = req.body;
+  const intentoPago = await stripe.paymentIntents.create({
+    amount,
+    currency,
+    customer: userid,
+    automatic_payment_methods: { enabled: true },
+  });
+  res.json({clientSecret:intentoPago.client_secret})
+});
 
 app.use((req, res) => {
   res.status(404).json({
