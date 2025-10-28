@@ -44,6 +44,12 @@ app.use("/api/products", productsRouter); //ABMC
 app.use("/api/category", categoryRouter);
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
+
+app.get((req,res)=>{
+  res.json({
+    mensaje:"back levantado"
+  })
+})
 /*app.get("/protegido",authMiddleware, (req,res)=>{
     res.json({
         mensage:"ruta protegida"
