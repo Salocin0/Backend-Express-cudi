@@ -19,6 +19,11 @@ export class productsService {
     return productos;
   }
 
+  async getAllPaginado(page,limit,offset){
+    const productos = await Product.find().populate("category","name").skip(offset).limit(limit);
+    return productos;
+  }
+
   async getAllProductsCategory(category){
     const categorydb = await Category.findOne({name: category})
     let productos = await Product.find({category: categorydb?._id}).populate("category","name");
