@@ -32,6 +32,7 @@ export const getAllProducts = async (req, res) => {
       data: productos,
     });
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       mensage: "Error",
       code: 500,

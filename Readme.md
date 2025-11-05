@@ -50,3 +50,68 @@ MONGOURL=
 MONGOURLEXT=
 ```
 asdasd
+
+
+```json
+"parameters": [
+  {
+    "name": "page",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "type": "integer",
+      "default": 1,
+      "minimum": 1
+    },
+    "description": "Número de página a obtener"
+  },
+  {
+    "name": "limit",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "type": "integer",
+      "default": 10,
+      "minimum": 1,
+      "maximum": 100
+    },
+    "description": "Cantidad de productos por página"
+  },
+  {
+    "name": "category",
+    "in": "query",
+    "required": false,
+    "schema": {
+      "type": "string"
+    },
+    "description": "Filtrar por categoría"
+  }
+]
+```
+
+
+```json
+
+"parameters": [
+  {
+    "name": "Authorization",
+    "in": "header",
+    "required": true,
+    "schema": {
+      "type": "string"
+    },
+    "description": "Token de autenticación JWT. Ejemplo: 'eyJhbGci...'",
+    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  },
+  {
+    "name": "X-Request-ID",
+    "in": "header",
+    "required": false,
+    "schema": {
+      "type": "string"
+    },
+    "description": "Identificador único opcional del request para trazabilidad"
+  }
+]
+
+```

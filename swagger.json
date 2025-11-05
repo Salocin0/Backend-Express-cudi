@@ -1,0 +1,225 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Ecommerce API",
+        "version": "1.0.0",
+        "description": "description de ejemplo"
+    },
+    "servers":[
+        {
+            "url":"http://localhost:3000",
+            "desciption":"Local"
+        },
+        {
+            "url":"https://ecommerce-react-6x22.vercel.app",
+            "desciption":"Deploy vercel"
+        }
+    ],
+    "paths": {
+        "/api/products": {
+            "get": {
+                "summary": "obtener todos los productos",
+                "tags": [
+                    "Products"
+                ]
+            },
+            "post": {
+                "summary": "crear un producto nuevo",
+                "tags": [
+                    "Products"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "producto de ejemplo"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "example": 9.99
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "description de ejemplo"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "example": "https://example.com/sample-product.jpg"
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "example": "Electronica"
+                                    },
+                                    "rate": {
+                                        "type": "number",
+                                        "example": 4.2
+                                    },
+                                    "count": {
+                                        "type": "number",
+                                        "example": 45
+                                    },
+                                    "stock": {
+                                        "type": "number",
+                                        "example": 20
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/{id}": {
+            "get": {
+                "summary": "obtener un producto especifico",
+                "tags": [
+                    "Products"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "id del producto a obtener"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "producto Obtenido correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "desciption": {
+                                                    "type": "string",
+                                                    "example": "descripcion"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "https://example.com/sample-product.jpg"
+                                                },
+                                                "stock": {
+                                                    "type": "number",
+                                                    "example": 20
+                                                },
+                                                "status": {
+                                                    "type": "bool",
+                                                    "example": true
+                                                },
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "68c351714b85af76f955f78d"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "a"
+                                                },
+                                                "price":{
+                                                    "type": "number",
+                                                    "example": 100
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"error: bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string",
+                                            "example": "Error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": 400
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items":{
+                                                "type":"string",
+                                                "example":"El id no es valido" 
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500":{
+                        "description":"error: intenal server",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "mensaje": {
+                                            "type": "string",
+                                            "example": "Error"
+                                        },
+                                        "code": {
+                                            "type": "number",
+                                            "example": 500
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties":{
+                                                
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "actualizar un producto",
+                "tags": [
+                    "Products"
+                ]
+            },
+            "delete": {
+                "summary": "eliminar un producto",
+                "tags": [
+                    "Products"
+                ]
+            }
+        },
+        "/api/products/populado": {
+            "get": {
+                "summary": "obtener todos los productos populados",
+                "tags": [
+                    "Products Extra"
+                ]
+            }
+        }
+    }
+}

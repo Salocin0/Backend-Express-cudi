@@ -7,6 +7,8 @@ import env from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import Stripe from "stripe";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "../swagger.json" with {type:"json"}
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -44,6 +46,8 @@ app.use("/api/products", productsRouter); //ABMC
 app.use("/api/category", categoryRouter);
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 /*app.get("/protegido",authMiddleware, (req,res)=>{
     res.json({
