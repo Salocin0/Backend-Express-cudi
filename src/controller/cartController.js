@@ -1,3 +1,4 @@
+import { logger } from "../config/Winston.js";
 import { CartService } from "../service/cartService.js";
 
 const cartService = new CartService()

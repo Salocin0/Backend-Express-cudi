@@ -9,6 +9,8 @@ import cors from "cors";
 import Stripe from "stripe";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger.json" with {type:"json"}
+import { logger } from "./config/Winston.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -23,6 +25,11 @@ const corsOptions = {
   methods: ["GET", "PUT", "POST", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization", "x-refresh-token"],
 };
+
+app.use((req,res,next)=>{
+  logger.info(`${req.method} - ${req.url} - ${req.originalUrl}`)
+  next()
+})
 
 /*app.use(compression({
     filter:(req,res)=>{
@@ -49,6 +56,7 @@ app.use("/api/cart", cartRouter);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
+app.use(errorHandler)
 /*app.get("/protegido",authMiddleware, (req,res)=>{
     res.json({
         mensage:"ruta protegida"

@@ -3,3 +3,6 @@
 
 .env.prod
 .env.dev
+*.log
+
+/logs

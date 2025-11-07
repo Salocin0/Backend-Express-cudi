@@ -4,7 +4,7 @@ import { validationResult } from "express-validator";
 //responsable de quitar las variables de la peticion y preparar la salida
 const ps = new productsService();
 
-export const getOneProduct = async (req, res) => {
+export const getOneProduct = async (req, res,next) => {
   try {
     const { id } = req.params;
 
@@ -15,15 +15,11 @@ export const getOneProduct = async (req, res) => {
       data: producto,
     });
   } catch (error) {
-    res.status(500).json({
-      mensage: "Error",
-      code: 500,
-      data: error,
-    });
+    next(error)
   }
 };
 
-export const getAllProducts = async (req, res) => {
+export const getAllProducts = async (req, res,next) => {
   try {
     const productos = await ps.getAll();
     res.status(200).json({
@@ -32,16 +28,11 @@ export const getAllProducts = async (req, res) => {
       data: productos,
     });
   } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      mensage: "Error",
-      code: 500,
-      data: error,
-    });
+    next(error)
   }
 };
 
-export const getAllProductsPopulado = async (req, res) => {
+export const getAllProductsPopulado = async (req, res,next) => {
   try {
     const productos = await ps.getAllPopulado();
     res.status(200).json({
@@ -50,15 +41,11 @@ export const getAllProductsPopulado = async (req, res) => {
       data: productos,
     });
   } catch (error) {
-    res.status(500).json({
-      mensage: "Error",
-      code: 500,
-      data: error,
-    });
+    next(error)
   }
 };
 
-export const getAllProductsPaginado = async (req, res) => {
+export const getAllProductsPaginado = async (req, res,next) => {
   try {
     const {page = 1, limit = 10} = req.query
     const offset = (page - 1) * limit
@@ -69,16 +56,11 @@ export const getAllProductsPaginado = async (req, res) => {
       data: productos,
     });
   } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      mensage: "Error",
-      code: 500,
-      data: error,
-    });
+    next(error)
   }
 };
 
-export const getAllProductsFiltrado = async (req, res) => {
+export const getAllProductsFiltrado = async (req, res,next) => {
   try {
     const {name, pmin,pmax,sortby,order} = req.query
     const productos = await ps.getAllFiltrado(name,pmin,pmax,sortby,order);
@@ -88,17 +70,12 @@ export const getAllProductsFiltrado = async (req, res) => {
       data: productos,
     });
   } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      mensage: "Error",
-      code: 500,
-      data: error,
-    });
+    next(error)
   }
 };
 
 
-export const getAllProductsCategory= async (req, res) => {
+export const getAllProductsCategory= async (req, res,next) => {
   try {
     const {category} = req.params
     const productos = await ps.getAllProductsCategory(category);
@@ -108,17 +85,12 @@ export const getAllProductsCategory= async (req, res) => {
       data: productos,
     });
   } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      mensage: "Error",
-      code: 500,
-      data: error,
-    });
+    next(error)
   }
 };
 
 
-export const createOneProduct = async (req, res) => {
+export const createOneProduct = async (req, res,next) => {
   try {
     const { title, price, description, image, category, rate, count, stock } =
       req.body;
@@ -139,16 +111,11 @@ export const createOneProduct = async (req, res) => {
       data: productoCreado,
     });
   } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      mensage: "Error",
-      code: 500,
-      data: error,
-    });
+    next(error)
   }
 };
 
-export const updateOneProduct = async (req, res) => {
+export const updateOneProduct = async (req, res,error) => {
   try {
     const { id } = req.params;
     const { title, price, desciption, image, category, rate, count, stock } =
@@ -172,15 +139,11 @@ export const updateOneProduct = async (req, res) => {
       data: productoActualizado,
     });
   } catch (error) {
-    res.status(500).json({
-      mensage: "Error",
-      code: 500,
-      data: error,
-    });
+   next(error)
   }
 };
 
-export const deleteProduct = async (req, res) => {
+export const deleteProduct = async (req, res,next) => {
   try {
     const { id } = req.params;
     const productoEliminado = await ps.deleteLogicoProduct(id);
@@ -191,10 +154,6 @@ export const deleteProduct = async (req, res) => {
       data: productoEliminado,
     });
   } catch (error) {
-    res.status(500).json({
-      mensage: "Error",
-      code: 500,
-      data: error,
-    });
+    next(error)
   }
 };

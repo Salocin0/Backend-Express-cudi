@@ -10,6 +10,7 @@ export class productsService {
   }
 
   async getAll() {
+    throw new Error("error de base de datos")
     const productos = await Product.find();
     return productos;
   }
