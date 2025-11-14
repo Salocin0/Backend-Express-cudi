@@ -11,6 +11,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger.json" with {type:"json"}
 import { logger } from "./config/Winston.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import pedidosRouter from "./router/pedidoRouter.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -53,6 +54,7 @@ app.use("/api/products", productsRouter); //ABMC
 app.use("/api/category", categoryRouter);
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/pedidos",pedidosRouter)
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
